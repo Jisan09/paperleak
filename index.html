@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>India Paper Leaks Observatory</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">India paper leaks dataset</p>
+        <h1>Exam paper leak incidents, 2004-2026</h1>
+        <p class="dek">Interactive view of exam leak records across years, states, conducting bodies, source confidence, official action, arrests, deaths, and reported aspirant impact.</p>
+      </div>
+      <div class="header-stat">
+        <span id="lastUpdated">CSV loaded locally</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="filters" aria-label="Dashboard filters">
+        <label>
+          Search
+          <input id="searchInput" type="search" placeholder="Exam, body, note, source">
+        </label>
+        <label>
+          Era
+          <select id="eraFilter"></select>
+        </label>
+        <label>
+          Year
+          <select id="yearFilter"></select>
+        </label>
+        <label>
+          Status
+          <select id="statusFilter"></select>
+        </label>
+        <label>
+          Body type
+          <select id="bodyFilter"></select>
+        </label>
+        <label>
+          State / area
+          <select id="stateFilter"></select>
+        </label>
+        <label>
+          Action
+          <select id="actionFilter"></select>
+        </label>
+        <label>
+          Confidence
+          <select id="confidenceFilter"></select>
+        </label>
+      </section>
+      <button id="resetFilters" class="floating-reset" type="button">Reset filters</button>
+
+      <section class="kpis" aria-label="Summary metrics">
+        <article>
+          <span>Total incidents</span>
+          <strong id="kpiIncidents">0</strong>
+        </article>
+        <article>
+          <span>Confirmed cases</span>
+          <strong id="kpiConfirmed">0</strong>
+        </article>
+        <article>
+          <span>Recorded arrests</span>
+          <strong id="kpiArrests">0</strong>
+        </article>
+        <article>
+          <span>Aspirants affected</span>
+          <strong id="kpiAffected">0</strong>
+        </article>
+        <article>
+          <span>Linked deaths</span>
+          <strong id="kpiDeaths">0</strong>
+        </article>
+      </section>
+
+      <section class="grid two">
+        <article class="panel wide">
+          <div class="panel-head">
+            <div>
+              <h2>Yearwise incidents</h2>
+              <p>Counts by exam date year. Hover or tap bars for values.</p>
+            </div>
+            <div id="yearSelection" class="chart-selection" hidden></div>
+          </div>
+          <div id="yearChart" class="chart tall" role="img" aria-label="Yearwise incident bar chart"></div>
+        </article>
+
+        <article class="panel">
+          <h2>Leak status</h2>
+          <div id="statusChart" class="chart" role="img" aria-label="Leak status donut chart"></div>
+        </article>
+      </section>
+
+      <section class="grid map-grid">
+        <article class="panel map-panel">
+          <div class="panel-head">
+            <div>
+              <h2>India statewise count map</h2>
+            </div>
+            <div class="map-total" id="mapNationalCount">All India: 0</div>
+          </div>
+          <div id="indiaMap" class="map" role="img" aria-label="India statewise incident bubble map"></div>
+        </article>
+
+        <article class="panel">
+          <h2>States and territories</h2>
+          <p id="stateBarsTotal">Total: 0</p>
+          <div id="stateBars" class="chart list-chart" role="img" aria-label="Statewise ranking bar chart"></div>
+        </article>
+      </section>
+
+      <section class="grid three compact">
+        <article class="panel">
+          <h2>Body type</h2>
+          <div id="bodyChart" class="chart" role="img" aria-label="Central versus state chart"></div>
+        </article>
+        <article class="panel">
+          <h2>Era comparison</h2>
+          <div id="eraChart" class="chart" role="img" aria-label="Era comparison chart"></div>
+        </article>
+        <article class="panel">
+          <h2>Confidence level</h2>
+          <div id="confidenceChart" class="chart" role="img" aria-label="Source confidence chart"></div>
+        </article>
+      </section>
+
+      <section class="grid two">
+        <article class="panel">
+          <h2>Top conducting bodies</h2>
+          <div id="bodyNameChart" class="chart list-chart" role="img" aria-label="Top conducting bodies chart"></div>
+        </article>
+        <article class="panel">
+          <h2>Aspirants affected by year</h2>
+          <div id="affectedYearChart" class="chart" role="img" aria-label="Aspirants affected by year chart"></div>
+        </article>
+      </section>
+
+      <section class="grid three">
+        <article class="panel">
+          <h2>Action taken</h2>
+          <div id="actionChart" class="chart list-chart" role="img" aria-label="Action taken ranking"></div>
+        </article>
+        <article class="panel">
+          <h2>Arrests by state</h2>
+          <div id="arrestsStateChart" class="chart list-chart" role="img" aria-label="Arrests by state chart"></div>
+        </article>
+        <article class="panel">
+          <h2>Affected aspirants by state</h2>
+          <div id="affectedStateChart" class="chart list-chart" role="img" aria-label="Affected aspirants by state chart"></div>
+        </article>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Incident records</h2>
+            <p id="recordCount">Showing 0 records</p>
+          </div>
+          <button id="exportCsv" type="button">Export filtered CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Exam</th>
+                <th>Area</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Arrests</th>
+                <th>Affected</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="recordsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div id="tooltip" class="tooltip" hidden></div>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
