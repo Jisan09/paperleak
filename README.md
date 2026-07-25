@@ -2,7 +2,7 @@
 
 An interactive static dashboard for exploring reported Indian exam paper leak incidents from 2004 to 2026.
 
-Live site: https://jisan09.github.io/PaperLeak/
+Live site: https://jisan09.github.io/paperleak/
 
 ## What It Shows
 
